@@ -1,4 +1,5 @@
 @echo off
+set folder=%~dp0
 rem christian logic' software
 mode 60,25
 tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=1
@@ -29,5 +30,5 @@ ipconfig & timeout 3 >nul
 title lame
 
 if "%var%"=="1"  exit
-wscript "C:\Users\Anil Bapna\Desktop\New Folder\dhcp.vbs"
+wscript "%folder%\dhcp.vbs"
 timeout 5

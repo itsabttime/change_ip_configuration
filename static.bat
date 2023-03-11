@@ -1,4 +1,5 @@
 @echo off
+set folder=%~dp0
 tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=0
 choice /c 12 /d 1 /t 1 >nul
  (if %errorlevel%==2 goto over)& color F
@@ -22,5 +23,5 @@ pause
 ipconfig & timeout 3 >nul
 title lame
 if "%var%"=="1"  exit
-wscript "C:\Users\Anil Bapna\Desktop\New folder\static.vbs"
+wscript "%folder%\static.vbs"
 timeout 5
