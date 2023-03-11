@@ -9,8 +9,12 @@ Batch Script to change Windows Ip address configuration from Static to Dynamic e
 <SUP><sup>
   PRIVELEGES EXECUTES THE COMMAND AND LEAVES
 <SUP><sup>
+  
+  
 ~-ALSO NOTE, U WILL HAVE TO CHANGE ALL PATH FILE NAMES IN THE BATCH FILES FOR IT-~
 
+  
+  
   TO WORK (A LITTLE WORK CUT OUT4U-SO SORRY:))
   
   ###### NOTES: Requires AutoHotKey Version 2
