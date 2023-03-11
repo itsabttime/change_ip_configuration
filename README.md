@@ -1,6 +1,7 @@
 # change_ip_configuration
 Batch Script to change Windows Ip address configuration from Static to Dynamic etc.
 ##### <SUP><sup> HOW TO USE:
+  <SUP><sup>
   FIRST ,EDIT THE STATIC BATCH FILE TO CHANGE IP ADDRESS TO YOUR SATISFACTION.
   U RUN THE MAIN.AHK FILE, IT SHOWS 2 WINDOWS- QUICKLY CLICK OPTION U R OK WITH.
 
