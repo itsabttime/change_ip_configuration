@@ -1,4 +1,4 @@
-# change_ip_configuration
+# + change_ip_configuration +
 Batch Script to change Windows Ip address configuration from Static to Dynamic etc.
 ##### <SUP><sup> HOW TO USE:
   <SUP><sup>
