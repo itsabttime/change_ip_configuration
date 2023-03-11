@@ -14,6 +14,9 @@ Batch Script to change Windows Ip address configuration from Static to Dynamic e
 ~-ALSO NOTE, U WILL HAVE TO CHANGE ALL PATH FILE NAMES IN THE BATCH FILES FOR IT-~
 
   
+  Please Remove the PAUSE (s) in the BATCH FILES if u wish to let the batch file do it ownit's own.
+  
+  ( Do not remove the Timeouts )
   
   TO WORK (A LITTLE WORK CUT OUT4U-SO SORRY:))
   
