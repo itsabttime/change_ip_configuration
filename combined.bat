@@ -39,13 +39,14 @@ ECHO WAITING FOR SUCCESSFUL TRANSFER...
 echo netsh interface ip set address x%interface%x dhcp
 netsh interface ip set address %interface% dhcp
 
-
-timeout 5 >NUL
+timeout 4 >NUL
+cls
+echo Ipconfig:
+timeout 1 >NUL
 ipconfig
 pause
-:overone
 
-ipconfig & timeout 3 >nul
+
 title lame
 
 if "%var%"=="1"  exit
@@ -56,18 +57,12 @@ echo strPath = FSO.GetParentFolderName (WScript.ScriptFullName) >>temp302923.vbs
 echo extra = "cd " ^& Chr(34) ^& strPath ^& Chr(34) ^& " & "  >>temp302923.vbs 
 echo objShell.ShellExecute "cmd", "/c " ^& Chr(34) ^& extra ^& " .\combined.bat 2" ^& Chr(34), "", "runas" >>temp302923.vbs 
 wscript "%folder%\temp302923.vbs"
-REM temp302923.vbs
-cls
-echo Ipconfig:
-timeout 5 >NUL
+del temp302923.vbs
+
 
 
 goto esof
 
-:check
-mode 30,10 &cls&echo.config203982.conf missing.&echo. Please generate it
-echo Running Conf Wizard....&TIMEOUT 2 >nul
-start cmd /v:on /c "@echo off &if NOT EXIST str.bat (ECHO NOT FOUND STR.BAT & PAUSE) ELSE (str.bat)"
 exit
 
 :esof
@@ -124,12 +119,12 @@ for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
 ECHO WAITING FOR SUCCESSFUL TRANSFER...
 echo netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
 netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
+timeout 4 >NUL
 cls
 echo Ipconfig:
-timeout 5 >NUL
+timeout 1 >NUL
 ipconfig
 pause
-:over
 
 title lame
 if "%var%"=="1"  exit
@@ -140,20 +135,17 @@ echo strPath = FSO.GetParentFolderName (WScript.ScriptFullName) >>temp302923.vbs
 echo extra = "cd " ^& Chr(34) ^& strPath ^& Chr(34) ^& " & "  >>temp302923.vbs 
 echo objShell.ShellExecute "cmd", "/c " ^& Chr(34) ^& extra ^& " .\combined.bat 1" ^& Chr(34), "", "runas" >>temp302923.vbs 
 wscript "%folder%\temp302923.vbs"
-REM del temp302923.vbs
+del temp302923.vbs
 timeout 5
 
 goto esof
 
-:check
-mode 30,10 &cls&echo.config203982.conf missing.&echo. Please generate it
-echo Running Conf Wizard....&TIMEOUT 2 >nul
-start cmd /v:on /c "@echo off &if NOT EXIST str.bat (ECHO NOT FOUND STR.BAT & PAUSE) ELSE (str.bat)"
 exit
 :esof
 PAUSE
 EXIT
 :wizard
+:check
 endlocal
 
 @echo off
