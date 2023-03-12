@@ -41,5 +41,10 @@ powershell -c "$str=\"!str!\";$str.replace('Ethernet adapter','')" >config203982
 
 echo !str!
 
+@echo off
+timeout 1 >NUL
+cls
+echo.&echo.GENERATED config203982.conf 
 
-PAUSE
+echo Please delete the file to reset interface settings.
+echo.&PAUSE

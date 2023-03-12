@@ -4,7 +4,7 @@ set folder=%~dp0
 tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=0
 
 if NOT EXIST config203982.conf (  goto check )
-for /f "delims= " %%i in (config203982.conf) do set interface=%%i
+for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
 choice /c 12 /d 1 /t 1 >nul
  (if %errorlevel%==2 goto over)& color F
 cls&for /l %%i in (1,1,10) do echo enter&echo.(1)DHCP &echo. (2)DYNM
