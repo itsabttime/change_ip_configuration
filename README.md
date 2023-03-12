@@ -22,4 +22,4 @@ Batch Script to change Windows Ip address configuration from Static to Dynamic e
   
   (A LITTLE WORK CUT OUT4U-SO SORRY:)
   
-  ###### NOTES: Requires AutoHotKey Version 2
+  ###### 
