@@ -1,5 +1,8 @@
 @echo off
 setlocal
+echo checking conf
+if NOT EXIST config203982.conf (  echo NOT FOUND conf file )
+type config203982.conf
 :back
 set strone=%1
 if "%strone%"=="9009" goto wizard
@@ -46,14 +49,17 @@ ipconfig & timeout 3 >nul
 title lame
 
 if "%var%"=="1"  exit
-echo Set objShell = CreateObject("Shell.Application") >temp302923.vbs
+echo 'output of combined.bat file https://github.com/xtremblorx/change_ip_configuration/blob/main/combined.bat >temp302923.vbs
+echo Set objShell = CreateObject("Shell.Application") >>temp302923.vbs
 echo Set FSO = CreateObject("Scripting.FileSystemObject") >>temp302923.vbs 
 echo strPath = FSO.GetParentFolderName (WScript.ScriptFullName) >>temp302923.vbs 
 echo extra = "cd " ^& Chr(34) ^& strPath ^& Chr(34) ^& " & "  >>temp302923.vbs 
 echo objShell.ShellExecute "cmd", "/c " ^& Chr(34) ^& extra ^& " .\combined.bat 2" ^& Chr(34), "", "runas" >>temp302923.vbs 
 wscript "%folder%\temp302923.vbs"
 REM temp302923.vbs
-timeout 5
+cls
+echo Ipconfig:
+timeout 5 >NUL
 
 
 goto esof
@@ -118,16 +124,17 @@ for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
 ECHO WAITING FOR SUCCESSFUL TRANSFER...
 echo netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
 netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
-
-
+cls
+echo Ipconfig:
 timeout 5 >NUL
 ipconfig
 pause
 :over
-ipconfig & timeout 3 >nul
+
 title lame
 if "%var%"=="1"  exit
-echo Set objShell = CreateObject("Shell.Application") >temp302923.vbs
+echo 'output of combined.bat file https://github.com/xtremblorx/change_ip_configuration/blob/main/combined.bat >temp302923.vbs
+echo Set objShell = CreateObject("Shell.Application") >>temp302923.vbs
 echo Set FSO = CreateObject("Scripting.FileSystemObject") >>temp302923.vbs 
 echo strPath = FSO.GetParentFolderName (WScript.ScriptFullName) >>temp302923.vbs 
 echo extra = "cd " ^& Chr(34) ^& strPath ^& Chr(34) ^& " & "  >>temp302923.vbs 
