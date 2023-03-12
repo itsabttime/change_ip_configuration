@@ -3,13 +3,17 @@ setlocal
 :back
 set strone=%1
 if "%strone%"=="9009" goto wizard
-if "%strone%"=="1" goto static
-if "%strone%"=="2" goto dynamic
-echo 1. static 2.dynamic
+if "%strone%"=="1" title Admin&goto static
+if "%strone%"=="2" title Admin&goto dynamic
+echo.Script will restart once to run with Admin priveleges.
+echo 1. static 2. dynamic 3. Reset start over
 set /p enter=
 if %enter%==1 goto static
 if %enter%==2 goto dynamic
+if %enter%==3 goto delcon
 goto back
+:delcon
+del config203982.conf
 :dynamic
 @echo off
 setlocal enabledelayedexpansion
@@ -23,8 +27,7 @@ echo Reading from conf file               config203982.conf
 echo Please delete the file to change the interface setting.
 echo IF YOU RAN INTO ERRORS, CHECK THE INTERFACE NAME IN THE CONF FILE
 for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
-choice /c 12 /d 1 /t 1 >nul
- (if %errorlevel%==2 goto overone)& color F
+
 
 
 
@@ -83,7 +86,7 @@ cls
 echo. &echo.
 echo ----IP SETTINGS----
 ECHO Press 2 to change
-choice /c 12 /d 1 /t 1 >nul
+choice /c 12 /d 1 /t 2 >nul
  (if %errorlevel% NEQ 2 goto next)
 echo on
 set /p ip_addr=
@@ -99,8 +102,8 @@ set getaway=192.168.1.1
 echo.  IP Address...=%ip_addr%
 echo. Subnet.......=%subn_%
 echo. Gateway......=%getaway%
-timeout 1 >NUL
-color 5c
+timeout 2 >NUL
+
 set folder=%~dp0
 tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=0
 
