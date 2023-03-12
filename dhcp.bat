@@ -8,17 +8,16 @@ tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=1
 for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
 choice /c 12 /d 1 /t 1 >nul
  (if %errorlevel%==2 goto over)& color F
-cls&for /l %%i in (1,1,20) do echo. (1)DHCP &echo. (2)DYNM.      Manager for         IP ADDRESS CONFIGURATION
+cls&for /l %%i in (1,1,20) do echo. Enable DHCP      Manager for         IP ADDRESS CONFIGURATION
 color F
-cls&for /l %%i in (1,1,20) do echo. (2)DYNM&echo. (1)DHCP.       Manager for         IP ADDRESS CONFIGURATION
+cls&for /l %%i in (1,1,20) do echo.  Enable DHCP     Manager for         IP ADDRESS CONFIGURATION
 color 5C&choice /c 12 /d 1 /t 1 >nul&
  (if %errorlevel%==2 (goto over))&color 5d&timeout 1 >nul & color F
 color 5C
-cls&for /l %%i in (1,1,20) do echo. (1)DHCP &echo. (2)DYNM.      Manager for         IP ADDRESS CONFIGURATION
+cls&for /l %%i in (1,1,20) do echo. Enable DHCP      Manager for         IP ADDRESS CONFIGURATION
 timeout 1 >nul &color 5C&timeout 1 >nul&color 5d&timeout 1 >nul & color F
-cls&for /l %%i in (1,1,20) do echo. (2)DYNM&echo. (1)DHCP.       Manager for         IP ADDRESS CONFIGURATION
-cls&for /l %%i in (1,1,20) do echo. (1)DHCP. &echo. (2)DYNM      Manager for         IP ADDRESS CONFIGURATION
-color 5C&timeout 1 >nul&color 5d&timeout 1 >nul & color F&cls
+cls&for /l %%i in (1,1,20) do echo.  Enable DHCP     Manager for         IP ADDRESS CONFIGURATION
+cls&for /l %%i in (1,1,20) do echo. Enable DHCP      Manager for         IP ADDRESS CONFIGURATION
 
 ECHO WAITING FOR SUCCESSFUL TRANSFER...
 netsh interface ip set address "%interface%" dhcp

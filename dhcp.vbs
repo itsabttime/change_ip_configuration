@@ -6,7 +6,7 @@ strPath = cstr(FSO.GetParentFolderName (WScript.ScriptFullName))
   '     Chr(34) & strPath & "" & Chr(34), "", "runas", 1
 'MsgBox strPath
 extra = "cd " & Chr(34) & strPath & Chr(34) & " & cd" 
-MsgBox "/c " & Chr(34) & extra & strPath & "\dhcp.bat'" & Chr(34)
+'MsgBox "/c " & Chr(34) & extra & strPath & "\dhcp.bat'" & Chr(34)
 'objShell.ShellExecute "cmd", "/c " & extra & strPath & "\dhcp.bat" & Chr(34), "", "runas"
 objShell.ShellExecute "cmd", "/c " & Chr(34) & extra & "& .\dhcp.bat" & Chr(34), "", "runas"
 'Else
