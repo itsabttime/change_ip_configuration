@@ -58,7 +58,7 @@ goto esof
 :check
 mode 30,10 &cls& echo Running Wizard....&TIMEOUT 2 >nul
 start cmd /v:on /c "@echo off &if NOT EXIST str.bat (ECHO NOT FOUND STR.BAT & PAUSE) ELSE (str.bat)"
-cls&echo.Run the program again.Please&PAUSE&exit
+cls&echo.config203982.conf missing.&echo. Please generate it ^&&echo.try again.&PAUSE&exit
 
 :esof
 PAUSE

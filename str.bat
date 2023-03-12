@@ -1,4 +1,5 @@
 @echo off
+title config generator
 SETLOCAL ENABLEDELAYEDEXPANSION
 :back
 echo Choose (1) Wi-Fi (2) Ethernet
