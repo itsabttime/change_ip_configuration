@@ -1,25 +1,126 @@
 @echo off
+:lang 
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "lang:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set lang=%%k
+
 
 set script=%~nx0
+if DEFINED lang (goto returnskip)
+echo (1)English(2)Portuguese(3)Russian(4)Spanish
+set /p lang=
+:returnskip
+if "%lang%"=="" (set lang=1)
+if "%lang%"=="1" (goto enlish)
+if "%lang%"=="2" (goto por2ges)
+if "%lang%"=="3" (goto russian)
+if "%lang%"=="4" (goto espanol)
 
+REM TRANSLATION SECTION
+:enlish
+set string1=checking conf
+set string2=NOT FOUND conf file
+set string3=Script will restart once to run with Admin priveleges.
+set string4=1. static 2. dynamic 3. set interface 4. language
+set string6=Reading from conf file               config203982.conf
+set string7=Please delete the file to change the interface setting.
+set string8=IF YOU RAN INTO ERRORS, CHECK THE INTERFACE NAME IN THE CONF FILE
+set string9=----IP SETTINGS----
+set string10=Press 2 to change
+set string11=Choose (1) Wi-Fi (2) Ethernet (3) Manual (4) Auto (uses powershell)
+set string12=Enter VALID:::
+set string13=Option
+set string14=GENERATED config203982.conf 
+set string15=Please delete the file to reset interface settings.
+set string16=conf file not generated
+set string17=Press 2 to register this interface ....or wait to skip
+set string20=INTERFACE name found
+goto return
+:por2ges
+set string1=verificando conf
+set string2=arquivo conf NÃO ENCONTRADO
+set string3=O script será reiniciado uma vez para executar com privilégios de administrador.
+set string4=1. estático 2. dinâmico 3. interface definida 4. idioma
+set string6=Lendo do arquivo conf config203982.conf
+set string7=Por favor, exclua o arquivo para alterar a configuração da interface.
+set string8=SE VOCÊ ENCONTRAR ERROS, VERIFIQUE O NOME DA INTERFACE NO ARQUIVO CONF
+set string9=----CONFIGURAÇÕES DE IP----
+set string10=Pressione 2 para mudar
+set string11=Escolha (1) Wi-Fi (2) Ethernet (3) Manual (4) Auto (usa powershell)
+set string12=Digite VÁLIDO:::
+set string13=Opção
+set string14=GERADO config203982.conf
+set string15=Por favor, exclua o arquivo para redefinir as configurações da interface.
+set string16=arquivo conf não gerado
+set string17=Pressione 2 para registrar esta interface ....ou espere para pular
+set string20=Nome da INTERFACE encontrado
+goto return
+:russian
+set string1=проверка конфига
+set string2 = НЕ НАЙДЕН файл конфигурации
+set string3=Сценарий будет перезапущен один раз для запуска с правами администратора.
+set string4=1. статический 2. динамический 3. установить интерфейс 4. язык
+set string6= Чтение из файла конфигурации config203982.conf
+set string7=Удалите файл, чтобы изменить настройки интерфейса.
+set string8=ЕСЛИ ВЫ СТОЛКНУЛИ ОШИБКИ, ПРОВЕРЬТЕ НАЗВАНИЕ ИНТЕРФЕЙСА В ФАЙЛЕ КОНФИГУРАЦИИ
+set string9=----НАСТРОЙКИ IP----
+set string10=Нажмите 2, чтобы изменить
+set string11= Выберите (1) Wi-Fi (2) Ethernet (3) Вручную (4) Авто (использует powershell)
+set string12=Введите ДЕЙСТВИТЕЛЬНО:::
+set string13= опция
+set string14= ГЕНЕРИРОВАННЫЙ config203982.conf
+set string15=Удалите файл, чтобы сбросить настройки интерфейса.
+set string16= файл conf не создан
+set string17=Нажмите 2, чтобы зарегистрировать этот интерфейс ....или подождите, чтобы пропустить
+set string20=Имя ИНТЕРФЕЙСА найдено
+goto return
+:espanol
+set string1=comprobando conf
+set string2=NO ENCONTRADO archivo conf
+set string3=El script se reiniciará una vez para ejecutarse con privilegios de administrador.
+set string4=1. estático 2. dinámico 3. establecer interfaz 4. idioma
+set string6=Leyendo del archivo conf config203982.conf
+set string7=Elimine el archivo para cambiar la configuración de la interfaz.
+set string8=SI SE ENCUENTRA CON ERRORES, COMPRUEBE EL NOMBRE DE LA INTERFAZ EN EL ARCHIVO CONF
+set string9=----CONFIGURACIÓN DE IP----
+set string10=Presione 2 para cambiar
+set string11=Elegir (1) Wi-Fi (2) Ethernet (3) Manual (4) Automático (usa powershell)
+set string12=Ingrese VÁLIDO:::
+set string13=Opción
+set string14=GENERATED config203982.conf
+set string15=Elimine el archivo para restablecer la configuración de la interfaz.
+set string16=archivo conf no generado
+set string17=Presione 2 para registrar esta interfaz....o espere para omitir
+set string20=Nombre de INTERFAZ encontrado
+goto return
+:return
 setlocal
-echo checking conf
-if NOT EXIST config203982.conf (  echo NOT FOUND conf file )
+echo %string1%
+if NOT EXIST config203982.conf (  echo %string2% )
 type config203982.conf
 :back
 set strone=%1
 if "%strone%"=="9009" goto wizard
 if "%strone%"=="1" title Admin&goto static
 if "%strone%"=="2" title Admin&goto dynamic
-echo.Script will restart once to run with Admin priveleges.
-echo 1. static 2. dynamic 3. Reset start over
+echo.%string3%
+echo %string4%
 set /p enter=
 if %enter%==1 goto static
 if %enter%==2 goto dynamic
 if %enter%==3 goto delcon
+if %enter%==4 goto lang1
 goto back
+:lang1
+echo Enter lang 1.english2.portugese3.russia4.spain &set /p lang=
+
+if "%lang%"=="1" (for /f "delims=" %%i in ('type config203982.conf ^| find /v "lang:"') do echo %%i>>config203982temp.conf)&echo.lang:1:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf
+if "%lang%"=="2" (for /f "delims=" %%i in ('type config203982.conf ^| find /v "lang:"') do echo %%i>>config203982temp.conf)&echo.lang:2:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf
+if "%lang%"=="3" (for /f "delims=" %%i in ('type config203982.conf ^| find /v "lang:"') do echo %%i>>config203982temp.conf)&echo.lang:3:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf
+if "%lang%"=="4" (for /f "delims=" %%i in ('type config203982.conf ^| find /v "lang:"') do echo %%i>>config203982temp.conf)&echo.lang:4:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf
+if "%lang%"=="" ((for /f "delims=" %%i in ('type config203982.conf ^| find /v "lang:"') do echo %%i>>config203982temp.conf)&echo.lang:1:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
+echo Language Set
+goto returnskip
 :delcon
-del config203982.conf
+goto check
 :dynamic
 @echo off
 setlocal enabledelayedexpansion
@@ -29,25 +130,25 @@ rem christian logic' software
 mode 60,25
 tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=1
 cls 
-echo Reading from conf file               config203982.conf
-echo Please delete the file to change the interface setting.
-echo IF YOU RAN INTO ERRORS, CHECK THE INTERFACE NAME IN THE CONF FILE
-for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
+echo %string6%
+echo %string7%
+echo %string8%
+for /f "tokens=1,2 delims=:" %%i in ('type config203982.conf ^| find "interface:"') do set interface=%%j
+powershell -c "\"!interface!\".replace(\" \",\"`n\")"
+set str=
+for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set str=!str! %%i
+for /f "tokens=* delims= " %%i in ("!str!") do set str=%%i
+set interface=!str!
 
 
 
+echo netsh interface ip set address name="%interface%" source=dhcp
+netsh interface ip set address "%interface%" source=dhcp
 
-ECHO WAITING FOR SUCCESSFUL TRANSFER...
-
-echo netsh interface ip set address x%interface%x dhcp
-netsh interface ip set address %interface% dhcp
-
-timeout 4 >NUL
-cls
+timeout 5 >NUL
 echo Ipconfig:
 timeout 1 >NUL
 ipconfig
-pause
 
 
 title lame
@@ -63,13 +164,12 @@ wscript "%folder%\temp302923.vbs"
 del temp302923.vbs
 
 
-
+timeout 10
 goto esof
 
 exit
 
 :esof
-PAUSE
 EXIT
 REM PLEASE KEEP SPACE BELOW
 :static
@@ -88,8 +188,8 @@ setlocal enabledelayedexpansion
 color f
 cls
 echo. &echo.
-echo ----IP SETTINGS----
-ECHO Press 2 to change
+echo %string9%
+ECHO %string10%
 choice /c 12 /d 1 /t 2 >nul
  (if %errorlevel% NEQ 2 goto next)
 echo on
@@ -113,21 +213,24 @@ tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=0
 
 if NOT EXIST config203982.conf (  goto check )
 cls
-echo Reading from conf file               config203982.conf
-echo Please delete the file to change the interface setting.
-echo IF YOU RAN INTO ERRORS, CHECK THE INTERFACE NAME IN THE CONF FILE
-for /f "tokens=* delims= " %%i in (config203982.conf) do set interface=%%i
+echo %string6%
+echo %string7%
+echo %string8%
+for /f "tokens=1,2 delims=:" %%i in ('type config203982.conf ^| find "interface:"') do set interface=%%j
+powershell -c "\"!interface!\".replace(\" \",\"`n\")"
+set str=
+for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set str=!str! %%i
+for /f "tokens=* delims= " %%i in ("!str!") do set str=%%i
+set interface=!str!
 
 
-ECHO WAITING FOR SUCCESSFUL TRANSFER...
 echo netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
-netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
-timeout 4 >NUL
-cls
+netsh interface ip set address name="%interface%" static %ip_addr% %subn_% %getaway%
+timeout 5 >NUL
 echo Ipconfig:
-timeout 1 >NUL
+timeout 2 >NUL
 ipconfig
-pause
+
 
 title lame
 if "%var%"=="1"  exit
@@ -139,13 +242,10 @@ echo extra = "cd " ^& Chr(34) ^& strPath ^& Chr(34) ^& " & "  >>temp302923.vbs
 echo objShell.ShellExecute "cmd", "/c " ^& Chr(34) ^& extra ^& " .\%script% 1" ^& Chr(34), "", "runas" >>temp302923.vbs 
 wscript "%folder%\temp302923.vbs"
 del temp302923.vbs
-timeout 5
-
-goto esof
-
+timeout 12
 exit
 :esof
-PAUSE
+
 EXIT
 :wizard
 :check
@@ -155,7 +255,7 @@ endlocal
 title config generator
 SETLOCAL ENABLEDELAYEDEXPANSION
 :back
-echo Choose (1) Wi-Fi (2) Ethernet (3) Manual (4) Auto (uses powershell)
+echo %string11%
 set /p option=
 if "!option!"=="1" goto wifi
 if "!option!"=="2" goto ethernet
@@ -163,10 +263,11 @@ if "!option!"=="3" goto auto
 if "!option!"=="4" goto autotwo
 goto back 
 :wifi
+
 set /a counter=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless Lan adapter" ^| findstr /r ":$"') DO set /a counter+=1 & echo !counter!..%%i
-echo Enter VALID:::
-for /l %%i in (1,1,%counter%) do echo|set /p=Option (%%i)
+echo %string12%
+for /l %%i in (1,1,%counter%) do echo|set /p=%string13% (%%i)
 echo.&echo| set /p=">>>>>>>>>>>
 set /p option=
 set /a counter=0
@@ -175,7 +276,10 @@ for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless Lan adapter"') DO s
 set str=%str::=%
 echo !str!
 echo on
-powershell -c "$str=\"!str!\";$str.replace('Wireless LAN adapter','')" >config203982.conf
+for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf
+powershell -c "$str=\"!str!\";$str = $str.replace('Wireless LAN adapter','');write-host interface:${str}:">>config203982temp.conf
+del config203982.conf
+rename config203982temp.conf config203982.conf
 
 GOTO NEXTeleven
 :Ethernet
@@ -183,7 +287,7 @@ GOTO NEXTeleven
 set /a counter=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a counter+=1 & echo !counter!..%%i
 echo Enter VALID:::
-for /l %%i in (1,1,%counter%) do echo|set /p=Option (%%i)
+for /l %%i in (1,1,%counter%) do echo|set /p=%string13% (%%i)
 echo.&echo| set /p=">>>>>>>>>>>
 set /p option=
 set /a counter=0
@@ -191,7 +295,10 @@ set /a option=!option!
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter"') DO set /a counter+=1 & if !counter!==!option! set str=%%i
 set str=%str::=%
 echo !str!
-powershell -c "$str=\"!str!\";$str.replace('Ethernet adapter','')" >config203982.conf
+for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf
+powershell -c "$str=\"!str!\";$str = $str.replace('Ethernet adapter','');write-host interface:${str}:">>config203982temp.conf
+del config203982.conf
+rename config203982temp.conf config203982.conf
 
 :NEXTeleven
 
@@ -200,14 +307,15 @@ echo !str!
 @echo off
 timeout 1 >NUL
 cls
-echo.&echo.GENERATED config203982.conf 
+echo.&echo.%string14% 
 
-echo Please delete the file to reset interface settings.
+echo %string15%
 echo.&PAUSE&Exit
 
 :Auto
 Endlocal
 Setlocal enabledelayedexpansion
+
 set /a counter=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a counter+=1 
 set /a count=0
@@ -215,11 +323,11 @@ set /a count=0
 set /a count+=1
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto two
 :two
-for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo INTERFACE name found....!str!. )
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo %str20%....!str!. )
 echo.
 if !counter! LSS !count! goto there
-choice /c 12 /d 1 /t 5 /m "Press 2 to register this interface ....or wait to skip"
-if !errorlevel!==2 ( echo "!str!">config203982.conf&EXIT )
+choice /c 12 /d 1 /t 5 /m "%string17%"
+if !errorlevel!==2 ( ((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)&EXIT )
 cls
 if !counter! LEQ !count! ( Goto there ) else ( Goto loopone )
 :there
@@ -231,18 +339,20 @@ set /a count+=1
 set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto two
 :two
-for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo INTERFACE name found....!str!. )
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo %str20%....!str!. )
 echo.
 if !counter! LSS !count! goto fere
-choice /c 12 /d 1 /t 5 /m "Press 2 to register this interface ....or wait to skip"
-if !errorlevel!==2 ( echo "!str!">config203982.conf&EXIT )
+choice /c 12 /d 1 /t 5 /m "%string17%"
+if !errorlevel!==2 ( ((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)&EXIT )
 cls
 if !counter! LEQ !count! ( Goto fere ) else ( Goto looptoo )
 :fere
-echo conf file not generated&pause&exit
+echo %string16%&pause&exit
 :Autotwo
+
 endlocal
 setlocal enabledelayedexpansion
+
 set /a counter=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a counter+=1 
 set /a count=0
@@ -252,7 +362,7 @@ set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto twotwo
 :twotwo
 for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo !str! )
-netsh interface show interface !str! | find "Connected"&&echo !str!>config203982.conf
+netsh interface show interface !str! | find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
 if !counter! LEQ !count! ( Goto theretwo ) else ( Goto looponetwo )
 :theretwo
 set /a counter=0
@@ -264,7 +374,7 @@ set /a count+=1
 set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto twothree
 :twothree
-for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo !str!)& netsh interface show interface !str! |Find "Connected"&&echo !str!>config203982.conf
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo !str!)& netsh interface show interface !str! |Find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
 if !counter! LEQ !count! ( Goto ferethree ) else ( Goto looptoothree )
 :ferethree
 
