@@ -98,8 +98,11 @@ if NOT EXIST config203982.conf (  echo %string2% )
 type config203982.conf
 :back
 set strone=%1
+set ip_addr=%2
+set subn_=%3
+set getaway=%4
 if "%strone%"=="9009" goto wizard
-if "%strone%"=="1" title Admin&goto static
+if "%strone%"=="1" if "%ip_addr%" NEQ "" title Admin&CALL :static %ip_addr% %subn_% %getaway%
 if "%strone%"=="2" title Admin&goto dynamic
 echo.%string3%
 echo %string4%
@@ -185,11 +188,16 @@ endlocal
 
 setlocal enabledelayedexpansion
 @echo off
+tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=1
+set ip_addr=%~1
+set subn_=%~2
+set getaway=%~3
 color f
 cls
 echo. &echo.
 echo %string9%
 ECHO %string10%
+if defined ip_addr ( if NOT DEFINED subn_ set subn_=255.255.255.0 )&( if NOT DEFINED getaway goto nekst )& goto skip
 choice /c 12 /d 1 /t 2 >nul
  (if %errorlevel% NEQ 2 goto next)
 echo on
@@ -209,7 +217,7 @@ echo. Gateway......=%getaway%
 timeout 2 >NUL
 
 set folder=%~dp0
-tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=0
+
 
 if NOT EXIST config203982.conf (  goto check )
 cls
@@ -239,7 +247,7 @@ echo Set objShell = CreateObject("Shell.Application") >>temp302923.vbs
 echo Set FSO = CreateObject("Scripting.FileSystemObject") >>temp302923.vbs 
 echo strPath = FSO.GetParentFolderName (WScript.ScriptFullName) >>temp302923.vbs 
 echo extra = "cd " ^& Chr(34) ^& strPath ^& Chr(34) ^& " & "  >>temp302923.vbs 
-echo objShell.ShellExecute "cmd", "/c " ^& Chr(34) ^& extra ^& " .\%script% 1" ^& Chr(34), "", "runas" >>temp302923.vbs 
+echo objShell.ShellExecute "cmd", "/c " ^& Chr(34) ^& extra ^& " .\%script% 1 %ip_addr% %subn_% %getaway%" ^& Chr(34), "", "runas" >>temp302923.vbs 
 wscript "%folder%\temp302923.vbs"
 del temp302923.vbs
 timeout 12
