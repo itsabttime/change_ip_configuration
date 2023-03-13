@@ -137,16 +137,16 @@ echo %string6%
 echo %string7%
 echo %string8%
 for /f "tokens=1,2 delims=:" %%i in ('type config203982.conf ^| find "interface:"') do set interface=%%j
-powershell -c "\"!interface!\".replace(\" \",\"`n\")"
-set str=
-for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set str=!str! %%i
-for /f "tokens=* delims= " %%i in ("!str!") do set str=%%i
-set interface=!str!
+set str=!interface!
+for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set ptr=%%i&goto nextproc
+:nextproc
+for /f "tokens=* delims= " %%i in ('powershell -c "$str = \"!str!\";$str.indexof(\"!ptr!\")"') do set ptrnum=%%i
+set interface=!str:~%ptrnum%,250!
 
 
 
-echo netsh interface ip set address name="%interface%" source=dhcp
-netsh interface ip set address "%interface%" source=dhcp
+echo netsh interface ip set address name="!interface!" source=dhcp
+netsh interface ip set address "!interface!" source=dhcp
 
 timeout 5 >NUL
 echo Ipconfig:
@@ -225,15 +225,15 @@ echo %string6%
 echo %string7%
 echo %string8%
 for /f "tokens=1,2 delims=:" %%i in ('type config203982.conf ^| find "interface:"') do set interface=%%j
-powershell -c "\"!interface!\".replace(\" \",\"`n\")"
-set str=
-for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set str=!str! %%i
-for /f "tokens=* delims= " %%i in ("!str!") do set str=%%i
-set interface=!str!
+set str=!interface!
+for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set ptr=%%i&goto nextprocto
+:nextprocto
+for /f "tokens=* delims= " %%i in ('powershell -c "$str = \"!str!\";$str.indexof(\"!ptr!\")"') do set ptrnum=%%i
+set interface=!str:~%ptrnum%,250!
 
 
-echo netsh interface ip set address name=%interface% static %ip_addr% %subn_% %getaway%
-netsh interface ip set address name="%interface%" static %ip_addr% %subn_% %getaway%
+echo netsh interface ip set address name=!interface! static %ip_addr% %subn_% %getaway%
+netsh interface ip set address name="!interface!" static %ip_addr% %subn_% %getaway%
 timeout 5 >NUL
 echo Ipconfig:
 timeout 2 >NUL
