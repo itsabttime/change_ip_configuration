@@ -24,7 +24,7 @@ set string6=Reading from conf file               config203982.conf
 set string7=Please delete the file to change the interface setting.
 set string8=SCRIPT WILL START AGAIN IN FEW SECONDS.......THANK YOU!
 set string9=----IP SETTINGS----
-set string10=Press 2 to change
+set string10=Press 2 to Manually Enter Details
 set string11=Choose (1) Wi-Fi (2) Ethernet (3) Manual (4) Auto (uses powershell)
 set string12=Enter VALID:::
 set string13=Option
@@ -33,6 +33,8 @@ set string15=Please delete the file to reset interface settings.
 set string16=conf file not generated
 set string17=Press 2 to register this interface ....or wait to skip
 set string20=INTERFACE name found
+set string21=Press 3 to Load Configuration
+set string22=Press 2 to Save Configuration
 goto return
 :por2ges
 set string1=verificando conf
@@ -197,9 +199,12 @@ cls
 echo. &echo.
 echo %string9%
 ECHO %string10%
+ECHO %string21%
 if defined ip_addr ( if NOT DEFINED subn_ set subn_=255.255.255.0 )&( if NOT DEFINED getaway goto nekst )& goto skip
-choice /c 12 /d 1 /t 2 >nul
+choice /c 123 /d 1 /t 2 >nul
+ (if !errorlevel!==3 goto load )
  (if %errorlevel% NEQ 2 goto next)
+:READER
 echo on
 set /p ip_addr=
 set /p subn_=
@@ -210,11 +215,20 @@ goto skip
 set ip_addr=192.168.1.12
 set subn_=255.255.255.0
 set getaway=192.168.1.1
+goto skip
+:load
+set ip_addr=
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "IPAddr:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set ip_addr=%%k
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "Subn:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set subn_=%%k
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "GT:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set getaway=%%k
+if "!ip_addr!"=="" ECHO NO CONFIGURATION FOUND!&ECHO.PLEASE ENTER:&GOTO READER
 :skip
 echo.  IP Address...=%ip_addr%
 echo. Subnet.......=%subn_%
 echo. Gateway......=%getaway%
-timeout 2 >NUL
+
+choice /c 12 /d 1 /t 5 /m "%string22%"
+if !errorlevel!==2 ((for /f "delims=" %%i in ('type config203982.conf ^| find /v "IPAddr:"') do echo %%i>>config203982temp.conf)&echo.IPAddr:%ip_addr%:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf&(for /f "delims=" %%i in ('type config203982.conf ^| find /v "Subn:"') do echo %%i>>config203982temp.conf)&echo.Subn:%subn_%:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf&(for /f "delims=" %%i in ('type config203982.conf ^| find /v "GT:"') do echo %%i>>config203982temp.conf)&echo.GT:%getaway%:>>config203982temp.conf&del config203982.conf&rename config203982temp.conf config203982.conf)
 
 set folder=%~dp0
 
@@ -367,15 +381,10 @@ set /a count=0
 :looponetwo
 set /a count+=1
 set /a strcount=0
-for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i& if !strcount!==!count! goto twothree
-:twothree
-for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i&set str=!str::=!)
-for /f "delims=" %%i in ('powershell -c "\"!str!\".replace(\" \",\"`n\")"') do set ptr=%%i&goto next20
-:next20
-for /f "tokens=* delims= " %%i in ('powershell -c "$str = \"!str!\";$str.indexof(\"!ptr!\")"') do set ptrnum=%%i
-set interface=!str:~%ptrnum%,250!
-set str=!interface!
-netsh interface show interface "!str!" | find "Connected"&&(echo !str!&&(for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
+for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto twotwo
+:twotwo
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo !str! )
+netsh interface show interface !str! | find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
 if !counter! LEQ !count! ( Goto theretwo ) else ( Goto looponetwo )
 :theretwo
 set /a counter=0
@@ -385,16 +394,9 @@ set /a count=0
 
 set /a count+=1
 set /a strcount=0
-for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i&if !strcount!==!count! goto twothree
+for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto twothree
 :twothree
-for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i&set str=!str::=!)
-for /f "delims=" %%i in ('powershell -c "\"!str!\".replace(\" \",\"`n\")"') do set ptr=%%i&goto next21
-:next21
-for /f "tokens=* delims= " %%i in ('powershell -c "$str = \"!str!\";$str.indexof(\"!ptr!\")"') do set ptrnum=%%i
-set interface=!str:~%ptrnum%,250!
-set str=!interface!
-echo !str!
-netsh interface show interface "!str!" | find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i & set str=!str::=! & echo !str!)& netsh interface show interface !str! |Find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
 if !counter! LEQ !count! ( Goto ferethree ) else ( Goto looptoothree )
 :ferethree
 
