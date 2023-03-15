@@ -7,3 +7,7 @@ Batch Script to change Windows Ip address configuration from Static to Dynamic e
 Update__ip1_.bat Uses Python for Older Versions of Windows
 
 Update_ip.bat Uses Powershell
+
+um gerenciador de rede do Windows em andamento para seu prazer
+
+<SUP>GLORY!<SUP>
