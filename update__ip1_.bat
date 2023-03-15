@@ -28,6 +28,8 @@ set string15=Please delete the file to reset interface settings.
 set string16=conf file not generated
 set string17=Press 2 to register this interface ....or wait to skip
 set string20=INTERFACE name found
+set string21=Press 3 to Load Configuration
+set string22=Press 2 to Save Configuration
 chcp 437
 goto lang
 :por2ges
@@ -213,25 +215,39 @@ cls
 echo. &echo.
 echo %string9%
 ECHO %string10%
+ECHO %string21%
 if defined ip_addr ( if NOT DEFINED subn_ set subn_=255.255.255.0 )&( if NOT DEFINED getaway goto nekst )& goto skip
-choice /c 12 /d 1 /t 2 >nul
- (if %errorlevel% NEQ 2 goto next)
+choice /c 123 /d 1 /t 2 >nul
+ (if !errorlevel!==3 goto load )
+ (if !errorlevel!==2 goto reader)
+:READER
 echo on
 set /p ip_addr=
 set /p subn_=
 set /p getaway=
 echo off
 goto skip
+:load
+set ip_addr=
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "IPAddr:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set ip_addr=%%k
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "Subn:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set subn_=%%k
+if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "GT:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set getaway=%%k
+if "!ip_addr!"=="" ECHO NO CONFIGURATION FOUND!&ECHO.PLEASE ENTER:&GOTO READER
+goto skip
 :next
 set ip_addr=192.168.1.12
 set subn_=255.255.255.0
 set getaway=192.168.1.1
 :skip
-echo.  IP Address...=%ip_addr%
-echo. Subnet.......=%subn_%
-echo. Gateway......=%getaway%
-timeout 2 >NUL
+echo.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+echo. ..IP Address...=%ip_addr%   
+echo. . Subnet.......=%subn_%
+echo. . Gateway......=%getaway%
 
+
+
+choice /c 12 /d 1 /t 5 /m "%string22%"
+if !errorlevel!==2 ((for /f "delims=" %%i in ('type config203982.conf ^| find /v "IPAddr:"') do echo %%i>>config203982temp.conf)&echo.IPAddr:%ip_addr%:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf&(for /f "delims=" %%i in ('type config203982.conf ^| find /v "Subn:"') do echo %%i>>config203982temp.conf)&echo.Subn:%subn_%:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf&(for /f "delims=" %%i in ('type config203982.conf ^| find /v "GT:"') do echo %%i>>config203982temp.conf)&echo.GT:%getaway%:>>config203982temp.conf&del config203982.conf&rename config203982temp.conf config203982.conf)
 set folder=%~dp0
 
 
