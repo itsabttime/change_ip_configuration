@@ -1,4 +1,5 @@
 @echo off
+:translate
 if EXIST  config203982.conf for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "lang:" ') do for /f "tokens=1,2 delims=:" %%j in ("%%a") do set lang=%%k
 if "%lang%"=="3" (chcp 855)
 if "%lang%"=="4" (chcp 65001)
@@ -28,7 +29,7 @@ set string16=conf file not generated
 set string17=Press 2 to register this interface ....or wait to skip
 set string20=INTERFACE name found
 chcp 437
-goto return
+goto lang
 :por2ges
 set string1=verificando conf
 set string2=arquivo conf NÃO ENCONTRADO
@@ -48,7 +49,7 @@ set string16=arquivo conf não gerado
 set string17=Pressione 2 para registrar esta interface ....ou espere para pular
 set string20=Nome da INTERFACE encontrado
 
-goto return
+goto lang
 :russian
 set string1=проверка конфига
 set string2 = НЕ НАЙДЕН файл конфигурации
@@ -68,7 +69,7 @@ set string16= файл conf не создан
 set string17=Нажмите 2, чтобы зарегистрировать этот интерфейс ....или подождите, чтобы пропустить
 set string20=Имя ИНТЕРФЕЙСА найдено
 
-goto return
+goto lang
 :espanol
 set string1=comprobando conf
 set string2=NO ENCONTRADO archivo conf
@@ -88,7 +89,7 @@ set string16=archivo conf no generado
 set string17=Presione 2 para registrar esta interfaz....o espere para omitir
 set string20=Nombre de INTERFAZ encontrado
 
-goto return
+goto lang
 
 :lang 
 
@@ -99,22 +100,14 @@ if %intr%==0 ( echo Interface is not Set!)
 for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "lang:" ') do echo Language is set
 
 set script=%~nx0
-if DEFINED lang (goto returnskip)
-echo (1)English(2)Portuguese(3)Russian(4)Spanish
-set /p lang=
-:returnskip
-if "%lang%"=="" (set lang=1)
-if "%lang%"=="1" (goto enlish)
-if "%lang%"=="2" (goto por2ges)
-if "%lang%"=="3" (goto russian)
-if "%lang%"=="4" (goto espanol)
 
-:return
 setlocal
 echo %string1%
 if NOT EXIST config203982.conf (  echo %string2% )
 type config203982.conf
 :back
+echo I AM A CHRISTIAN. I DID GO BACK. I LOVE JESUS.
+echo Who Knows? I like Questions ^& Question Marks
 set strone=%1
 set ip_addr=%2
 set subn_=%3
@@ -125,10 +118,11 @@ if "%strone%"=="2" title Admin&goto dynamic
 echo.%string3%
 echo %string4%
 set /p enter=
-if %enter%==1 goto static
-if %enter%==2 goto dynamic
-if %enter%==3 goto delcon
-if %enter%==4 goto lang1
+
+if "%enter%"=="1" goto static
+if "%enter%"=="2" goto dynamic
+if "%enter%"=="3" goto delcon
+if "%enter%"=="4" goto lang1
 goto back
 :lang1
 echo Enter lang 1.english2.portugese3.russia4.spain &set /p lang=
@@ -142,7 +136,7 @@ if "%lang%"=="3" (chcp 855)
 if "%lang%"=="4" (chcp 65001)
 if "%lang%"=="2" (chcp 65001)
 echo Language Set
-goto returnskip
+goto translate
 :delcon
 goto check
 :dynamic
@@ -284,14 +278,14 @@ endlocal
 @echo off
 title config generator
 SETLOCAL ENABLEDELAYEDEXPANSION
-:back
+:back11
 echo %string11%
 set /p option=
 if "!option!"=="1" goto wifi
 if "!option!"=="2" goto ethernet
 if "!option!"=="3" goto auto
 if "!option!"=="4" goto autotwo
-goto back 
+goto back11
 :wifi
 
 set /a counter=0
@@ -353,7 +347,7 @@ set /a count=0
 set /a count+=1
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i& if !strcount!==!count! goto two
 :two
-for /f "delims=*" %%i in ('python -c "str=\"!str!\";ptr=str.replace(\"Ethernet adapter \",\"\");print(ptr)"') do ( set str=%%i & set str=!str::=! & echo %str20%....!str!. )
+for /f "tokens=*" %%i in ('python -c "str=\"!str!\";ptr=str.replace(\"Ethernet adapter \",\"\");print(ptr)"') do ( set str=%%i & set str=!str::=! & echo %str20%....!str!. )
 echo.
 if !counter! LSS !count! goto there
 choice /c 12 /d 1 /t 5 /m "%string17%"
@@ -369,7 +363,7 @@ set /a count+=1
 set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i & if !strcount!==!count! goto two
 :two
-for /f "delims=*" %%i in ('python -c "str=\"!str!\";ptr=str.replace(\"Wireless LAN adapter \",\"\");print(ptr)"') do ( set str=%%i & set str=!str::=! & echo %str20%....!str!. )
+for /f "tokens=*" %%i in ('python -c "str=\"!str!\";ptr=str.replace(\"Wireless LAN adapter \",\"\");print(ptr)"') do ( set str=%%i & set str=!str::=! & echo %str20%....!str!. )
 echo.
 if !counter! LSS !count! goto fere
 choice /c 12 /d 1 /t 5 /m "%string17%"
