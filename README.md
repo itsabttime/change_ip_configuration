@@ -3,5 +3,7 @@ Batch Script to change Windows Ip address configuration from Static to Dynamic e
 
 
 ######## Script to change the Ip Configuration in Windows
+
 Update__ip1_.bat Uses Python for Older Versions of Windows
+
 Update_ip.bat Uses Powershell
