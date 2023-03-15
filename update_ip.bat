@@ -16,6 +16,7 @@ if "%lang%"=="4" (goto espanol)
 
 REM TRANSLATION SECTION
 :enlish
+chcp 437
 set string1=checking conf
 set string2=NOT FOUND conf file
 set string3=Script will restart once to run with Admin priveleges.
@@ -35,7 +36,6 @@ set string17=Press 2 to register this interface ....or wait to skip
 set string20=INTERFACE name found
 set string21=Press 3 to Load Configuration
 set string22=Press 2 to Save Configuration
-chcp 437
 goto return
 :por2ges
 chcp 65001
@@ -56,7 +56,6 @@ set string15=Por favor, exclua o arquivo para redefinir as configurações da in
 set string16=arquivo conf não gerado
 set string17=Pressione 2 para registrar esta interface ....ou espere para pular
 set string20=Nome da INTERFACE encontrado
-
 goto return
 :russian
 chcp 855
@@ -77,7 +76,6 @@ set string15=Удалите файл, чтобы сбросить настрой
 set string16= файл conf не создан
 set string17=Нажмите 2, чтобы зарегистрировать этот интерфейс ....или подождите, чтобы пропустить
 set string20=Имя ИНТЕРФЕЙСА найдено
-
 goto return
 :espanol
 chcp 65001
@@ -98,7 +96,6 @@ set string15=Elimine el archivo para restablecer la configuración de la interfa
 set string16=archivo conf no generado
 set string17=Presione 2 para registrar esta interfaz....o espere para omitir
 set string20=Nombre de INTERFAZ encontrado
-
 goto return
 :return
 setlocal
@@ -144,7 +141,7 @@ tasklist /fi "windowtitle eq lame*" | find "cmd.exe"&&set /a var=1
 cls 
 echo %string6%
 echo %string7%
-echo %string8%
+echo.&echo. %string8%&echo.
 for /f "tokens=1,2 delims=:" %%i in ('type config203982.conf ^| find "interface:"') do set interface=%%j
 set str=!interface!
 for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set ptr=%%i&goto nextproc
@@ -244,7 +241,7 @@ if NOT EXIST config203982.conf (  goto check )
 cls
 echo %string6%
 echo %string7%
-echo %string8%
+echo.&echo. %string8%&echo.
 for /f "tokens=1,2 delims=:" %%i in ('type config203982.conf ^| find "interface:"') do set interface=%%j
 set str=!interface!
 for /f "delims=" %%i in ('powershell -c "\"!interface!\".replace(\" \",\"`n\")"') do set ptr=%%i&goto nextprocto
@@ -301,7 +298,7 @@ echo.&echo| set /p=">>>>>>>>>>>
 set /p option=
 set /a counter=0
 set /a option=!option!
-for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless Lan adapter"  ^| findstr /r ":$"') DO set /a counter+=1 & if !counter!==!option! set str=%%i
+for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless Lan adapter"') DO set /a counter+=1 & if !counter!==!option! set str=%%i
 set str=%str::=%
 echo !str!
 echo on
@@ -321,7 +318,7 @@ echo.&echo| set /p=">>>>>>>>>>>
 set /p option=
 set /a counter=0
 set /a option=!option!
-for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter"  ^| findstr /r ":$"') DO set /a counter+=1 & if !counter!==!option! set str=%%i
+for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter"') DO set /a counter+=1 & if !counter!==!option! set str=%%i
 set str=%str::=%
 echo !str!
 for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf
@@ -352,7 +349,7 @@ set /a count=0
 set /a count+=1
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i& if !strcount!==!count! goto two
 :two
-for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i& set str=!str::=!& echo %str20%....!str!. )
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i& set str=!str::=!& echo %str20%....!str!. )
 echo.
 if !counter! LSS !count! goto there
 choice /c 12 /d 1 /t 5 /m "%string17%"
@@ -368,7 +365,7 @@ set /a count+=1
 set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i& if !strcount!==!count! goto two
 :two
-for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i& set str=!str::=!& echo %str20%....!str!. )
+for /f "delims=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter \",\"\")"') do ( set str=%%i& set str=!str::=!& echo %str20%....!str!. )
 echo.
 if !counter! LSS !count! goto fere
 choice /c 12 /d 1 /t 5 /m "%string17%"
@@ -390,14 +387,8 @@ set /a count+=1
 set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Ethernet adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i& if !strcount!==!count! goto twotwo
 :twotwo
-for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter\",\"\")"') do ( set str=%%i&set str=!str::=!)
-for /f "delims=" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\" \",\"`n\")"') do set ptr=%%i&goto next20
-:next20
-for /f "tokens=* delims= " %%i in ('powershell -c "$str=\"!str!\";$ptr=$str.indexof(\"!ptr!\");write-host $ptr"')  do set ptrnum=%%i
-set interface=!str:~%ptrnum%,250!
-set str=!interface!
-echo !str!
- netsh interface show interface "!str!" | find "Connected"&&(echo !str!&&(for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
+for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Ethernet adapter \",\"\")"') do ( set str=%%i& set str=!str::=!& echo !str! )
+netsh interface show interface !str! | find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
 if !counter! LEQ !count! ( Goto theretwo ) else ( Goto looponetwo )
 :theretwo
 set /a counter=0
@@ -409,14 +400,7 @@ set /a count+=1
 set /a strcount=0
 for /f "delims=" %%i in ('ipconfig /all ^| find /i "Wireless LAN adapter" ^| findstr /r ":$"') DO set /a strcount+=1 & set str=%%i& if !strcount!==!count! goto twothree
 :twothree
-for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter\",\"\")"') do ( set str=%%i&set str=!str::=!)
-for /f "delims=" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\" \",\"`n\")"') do set ptr=%%i&goto next21
-:next21
-for /f "tokens=* delims= " %%i in ('powershell -c "$str=\"!str!\";$ptr=$str.indexof(\"!ptr!\");write-host $ptr"')  do set ptrnum=%%i
-set interface=!str:~%ptrnum%,250!
-set str=!interface!
-echo !str!
- netsh interface show interface "!str!" | find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
+for /f "tokens=*" %%i in ('powershell -c "$str=\"!str!\";$str.replace(\"Wireless LAN adapter \",\"\")"') do ( set str=%%i& set str=!str::=!& echo !str!)& netsh interface show interface !str! |Find "Connected"&&((for /f "delims=" %%i in ('type config203982.conf ^| find /v "interface:"') do echo %%i>>config203982temp.conf)&echo.interface:!str!:>>config203982temp.conf&del config203982.conf& rename config203982temp.conf config203982.conf)
 if !counter! LEQ !count! ( Goto ferethree ) else ( Goto looptoothree )
 :ferethree
 
