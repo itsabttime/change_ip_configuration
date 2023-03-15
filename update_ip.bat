@@ -35,8 +35,10 @@ set string17=Press 2 to register this interface ....or wait to skip
 set string20=INTERFACE name found
 set string21=Press 3 to Load Configuration
 set string22=Press 2 to Save Configuration
+chcp 437
 goto return
 :por2ges
+chcp 65001
 set string1=verificando conf
 set string2=arquivo conf NÃO ENCONTRADO
 set string3=O script será reiniciado uma vez para executar com privilégios de administrador.
@@ -54,8 +56,10 @@ set string15=Por favor, exclua o arquivo para redefinir as configurações da in
 set string16=arquivo conf não gerado
 set string17=Pressione 2 para registrar esta interface ....ou espere para pular
 set string20=Nome da INTERFACE encontrado
+
 goto return
 :russian
+chcp 855
 set string1=проверка конфига
 set string2 = НЕ НАЙДЕН файл конфигурации
 set string3=Сценарий будет перезапущен один раз для запуска с правами администратора.
@@ -73,8 +77,10 @@ set string15=Удалите файл, чтобы сбросить настрой
 set string16= файл conf не создан
 set string17=Нажмите 2, чтобы зарегистрировать этот интерфейс ....или подождите, чтобы пропустить
 set string20=Имя ИНТЕРФЕЙСА найдено
+
 goto return
 :espanol
+chcp 65001
 set string1=comprobando conf
 set string2=NO ENCONTRADO archivo conf
 set string3=El script se reiniciará una vez para ejecutarse con privilegios de administrador.
@@ -92,6 +98,7 @@ set string15=Elimine el archivo para restablecer la configuración de la interfa
 set string16=archivo conf no generado
 set string17=Presione 2 para registrar esta interfaz....o espere para omitir
 set string20=Nombre de INTERFAZ encontrado
+
 goto return
 :return
 setlocal
