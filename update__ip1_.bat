@@ -13,8 +13,9 @@ REM TRANSLATION SECTION
 :enlish
 set string1=checking conf
 set string2=NOT FOUND conf file
-set string3=Script will restart once to run with Admin priveleges.
-set string4=1. static 2. dynamic 3. set interface 4. language
+set string3=1.First set the interface
+set string44=Then Choose An Option 1 or 2
+set string4=1. static 2. dynamic 3. set/change interface 4. language
 set string6=Reading from conf file               config203982.conf
 set string7=Please delete the file to change the interface setting.
 set string8=SCRIPT WILL START AGAIN IN FEW SECONDS.......THANK YOU!
@@ -100,13 +101,14 @@ set /a intr=0
 for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "interface:" ') do set /a intr=1&echo Interface is set
 if %intr%==0 ( echo Interface is not Set!)
 for /f "delims=" %%i in (config203982.conf) do for /f "delims=*" %%a in ('echo %%i ^| find "lang:" ') do echo Language is set
-
+TIMEOUT 1 >NUL&ECHO.................
 set script=%~nx0
 
 setlocal
-echo %string1%
+echo %string1%..
 if NOT EXIST config203982.conf (  echo %string2% )
-type config203982.conf
+echo...................
+for /f "delims=" %%i in (config203982.conf) do echo %%i | find /v "interface:" >NUL&&echo %%i || ECHO.                   [7m%%i[0m
 :back
 echo I AM A CHRISTIAN. I DID GO BACK. I LOVE JESUS.
 echo Who Knows? I like Questions ^& Question Marks
@@ -117,7 +119,9 @@ set getaway=%4
 if "%strone%"=="9009" goto wizard
 if "%strone%"=="1" if "%ip_addr%" NEQ "" title Admin&CALL :static %ip_addr% %subn_% %getaway%
 if "%strone%"=="2" title Admin&goto dynamic
+echo.
 echo.%string3%
+echo.&echo.%string44%&echo.
 echo %string4%
 set /p enter=
 
